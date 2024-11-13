@@ -15,9 +15,11 @@ const Header = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    router.push("/");
-    window.location.reload();
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("authToken");
+      router.push("/");
+      window.location.reload();
+    }
   };
 
   return (

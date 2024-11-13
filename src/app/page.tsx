@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import requests from "../libs/requests";
 import Nav from "./components/navbar/Nav";
@@ -21,9 +21,11 @@ export default function Home() {
   const genre = searchParams.get("genre") || "fetchTrending";
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    console.log(token, "token");
-    setIsAuthenticated(!!token);
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("authToken");
+      console.log(token, "token");
+      setIsAuthenticated(!!token);
+    }
   }, []);
 
   useEffect(() => {
@@ -47,16 +49,18 @@ export default function Home() {
   }, [genre, isAuthenticated]);
 
   return (
-    <div>
-      {isAuthenticated ? (
-        <>
-          <Header />
-          <Nav />
-          <Movie movies={movies} />
-        </>
-      ) : (
-        <Dashboard />
-      )}
-    </div>
+    <Suspense>
+      <div>
+        {isAuthenticated ? (
+          <>
+            <Header />
+            <Nav />
+            <Movie movies={movies} />
+          </>
+        ) : (
+          <Dashboard />
+        )}
+      </div>
+    </Suspense>
   );
 }
