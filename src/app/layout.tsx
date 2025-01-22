@@ -1,4 +1,5 @@
 import "./globals.css";
+import "notyf/notyf.min.css";
 
 export const metadata = {
   title: "Hulu App",

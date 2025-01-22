@@ -15,7 +15,7 @@ const Movie = ({ movies }) => {
   };
 
   return (
-    <div className="lg:px-16 px-6 lg:py-8 py-4">
+    <div className="lg:px-16 px-6 lg:py-8 py-4 text-white">
       <div className=" grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
         {movies?.length > 0 ? (
           movies.map((movie: any) => {
@@ -35,10 +35,10 @@ const Movie = ({ movies }) => {
                   <p className=" max-w-96 text-sm whitespace-nowrap overflow-hidden text-ellipsis">
                     {movie.overview}
                   </p>
-                  <h1 className=" font-bold text-xl text-[#4EE783] max-w-60 whitespace-nowrap overflow-hidden text-ellipsis">
+                  <h1 className=" font-bold text-xl text-slate-400 max-w-60 whitespace-nowrap overflow-hidden text-ellipsis">
                     {movie.title}
                   </h1>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center text-slate-500 gap-2">
                     <p>{movie.release_date}</p>
                     {movie.vote_count <= 200 ? (
                       <HandThumbDownIcon className="h-5 w-5" />

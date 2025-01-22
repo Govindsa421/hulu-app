@@ -1,80 +1,104 @@
-"use client";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+'use client'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Notyf } from 'notyf'
+import React from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Input } from '../components/custom/Input'
 
 type FormData = {
-  email: string;
-  password: string;
-};
+  email: string
+  password: string
+}
 
 const LoginPage: React.FC = () => {
-  const router = useRouter();
+  const router = useRouter()
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>()
+
+  const notfy = new Notyf({ position: { x: 'center', y: 'bottom' } })
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log("Submitting login data:", data);
+    console.log('Submitting login data:', data)
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (response.ok) {
-        localStorage.setItem("authToken", "hulutoken");
-        console.log("Login successful:", result);
-        router.push("/");
+        localStorage.setItem('authToken', 'hulutoken')
+        console.log('Login successful:', result)
+        router.push('/')
+        notfy.success('Login Success')
       } else {
-        console.error("Login failed:", result.message);
+        console.error('Login failed:', result.message)
+        notfy.error(result.message)
       }
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error('Error during login:', error)
+      notfy.error(error)
     }
-  };
+  }
 
   return (
-    <div>
-      <div className="flex justify-center items-center h-screen">
-        <form onSubmit={handleSubmit(onSubmit)} className=" space-y-6">
-          <div className="grid">
-            <input
-              type="text"
-              {...register("email", { required: "email is required" })}
-              className=" outline-none p-1 text-black rounded-sm"
+    <div className='flex justify-center items-center h-screen'>
+      <div className='border border-green-400 p-6 rounded shadow-lg shadow-green-500'>
+        <form onSubmit={handleSubmit(onSubmit)} className=' space-y-6'>
+          <div className='text-center font-bold text-xl'>Login</div>
+          <div className='grid'>
+            <Input
+              type='email'
+              register={register('email', {
+                required: { value: true, message: 'email is required' },
+                pattern: {
+                  value: /@./,
+                  message: 'email is inValid format',
+                },
+                validate: {
+                  noBackList: (fieldValue) => {
+                    return fieldValue.endsWith('gmail.com') || 'only gmail domains is supported'
+                  },
+                },
+              })}
+              placeholder='Email'
+              error={errors.email}
             />
-            {errors.email && (
-              <span className="text-red-500">{errors.email.message}</span>
-            )}
           </div>
-          <div className="grid">
-            <input
-              type="password"
-              {...register("password", { required: "password is required" })}
-              className=" outline-none p-1 text-black rounded-sm"
+          <div className='grid'>
+            <Input
+              type='password'
+              register={register('password', { required: { value: true, message: 'password is required' } })}
+              placeholder='Password'
+              error={errors.password}
             />
-            {errors.password && (
-              <span className="text-red-500">{errors.password.message}</span>
-            )}
           </div>
           <div>
-            <button type="submit" className="px-4 py-2 bg-[#4EE783] text-black">
-              Login
+            <button type='submit' className='px-4 py-2 font-bold w-full bg-[#4EE783] text-black'>
+              Log In
             </button>
+          </div>
+          <div className='text-center'>
+            <p>
+              {`Don't have an account ?`}
+              <span className=' underline underline-offset-2 ml-2'>
+                <Link href={'/register'}>Sign Up</Link>
+              </span>
+            </p>
           </div>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

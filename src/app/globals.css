@@ -7,3 +7,9 @@
     @apply bg-[#000000] text-[#4EE783];
   }
 }
+
+@layer components {
+  .inputField {
+    @apply outline-none p-2 text-black rounded-sm w-80;
+  }
+}

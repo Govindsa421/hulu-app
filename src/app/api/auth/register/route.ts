@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { connectDB } from "../../../../helper/dbConfig";
 import { User } from "../../../../helper/models";
+
+const JWT_SECRET = "your_jwt_secret";
 
 export async function POST(request: Request) {
   await connectDB();
@@ -34,12 +37,20 @@ export async function POST(request: Request) {
     console.log(newUser, "kk");
     await newUser.save();
 
+    const token = jwt.sign({ userId: newUser._id }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    console.log(token, "tt");
+
     return NextResponse.json(
-      { message: "User registered successfully" },
+      { message: "User registered successfully", token },
       { status: 201 }
     );
   } catch (error) {
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Server error", error: error.message },
+      { status: 500 }
+    );
     // console.error(
     //   "Error during registration:",
     //   error.stack || error.message || error
