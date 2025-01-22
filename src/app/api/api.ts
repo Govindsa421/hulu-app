@@ -1,20 +1,18 @@
-import requests from "../../libs/requests";
+import requests from '../../libs/requests'
 
 export async function getServerSideProps(context) {
-  console.log(context, "cc");
-  const genre = context.query.genre;
+  // console.log(context, "cc");
+  const genre = context.query.genre
   // console.log(genre, "gnre");
   const request = await fetch(
-    `https://api.themoviedb.org/3/${
-      requests[genre]?.url || requests.fetchTrending.url
-    }`
-  ).then((res) => res.json());
+    `https://api.themoviedb.org/3/${requests[genre]?.url || requests.fetchTrending.url}`,
+  ).then((res) => res.json())
 
   return {
     props: {
       results: request.results,
     },
-  };
+  }
 }
 
 // import { requests } from "../utils/requests";

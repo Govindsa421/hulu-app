@@ -1,26 +1,26 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, "Please provide a userName"],
+      required: [true, 'Please provide a userName'],
       trim: true,
-      minLength: [5, "Name must be larger than  5 character"],
-      maxlength: [9, "Name must be smaller than 9 character"],
+      minLength: [5, 'Name must be larger than  5 character'],
+      maxlength: [13, 'Name must be smaller than 12 character'],
     },
     email: {
       type: String,
-      required: [true, "Please provide a email"],
-      match: [/^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/i, "Invalid email address"],
+      required: [true, 'Please provide a email'],
+      match: [/^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/i, 'Invalid email address'],
     },
     password: {
       type: String,
-      required: [true, "Please provide a password"],
+      required: [true, 'Please provide a password'],
     },
     cpassword: {
       type: String,
-      required: [true, "Please provide a cpassword"],
+      required: [true, 'Please provide a cpassword'],
     },
   },
   //   gender: {
@@ -42,8 +42,7 @@ const userSchema = new mongoose.Schema(
   //     required: [true, "Please provide a message"],
   //   },
   // },
-  { timestamps: true }
-);
+  { timestamps: true },
+)
 
-export const User =
-  mongoose.models?.users || mongoose.model("users", userSchema);
+export const User = mongoose.models?.users || mongoose.model('users', userSchema)

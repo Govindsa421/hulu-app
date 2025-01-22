@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
   const notfy = new Notyf({ position: { x: 'center', y: 'bottom' } })
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log('Submitting login data:', data)
+    // console.log('Submitting login data:', data)
 
     try {
       const response = await fetch('/api/auth/login', {
@@ -37,15 +37,15 @@ const LoginPage: React.FC = () => {
 
       if (response.ok) {
         localStorage.setItem('authToken', 'hulutoken')
-        console.log('Login successful:', result)
+        // console.log('Login successful:', result)
         router.push('/')
         notfy.success('Login Success')
       } else {
-        console.error('Login failed:', result.message)
+        // console.error('Login failed:', result.message)
         notfy.error(result.message)
       }
     } catch (error) {
-      console.error('Error during login:', error)
+      // console.error('Error during login:', error)
       notfy.error(error)
     }
   }
