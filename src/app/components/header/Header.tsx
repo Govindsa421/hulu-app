@@ -1,7 +1,6 @@
-import Image from 'next/image'
 import React from 'react'
+import Image from 'next/image'
 import { HeaderItem } from './HeaderItem'
-
 import { HomeIcon, BoltIcon, CheckBadgeIcon, MagnifyingGlassIcon, UserIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
 import { Notyf } from 'notyf'

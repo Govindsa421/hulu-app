@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Notyf } from 'notyf'
 
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -21,11 +21,18 @@ const RegisterPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>()
-  const notfy = new Notyf({ position: { x: 'center', y: 'bottom' } })
+  const [notfy, setNotfy] = useState<Notyf | null>(null)
+
+  useEffect(() => {
+    // Ensure the code is run on the client
+    if (typeof window !== 'undefined') {
+      setNotfy(new Notyf({ position: { x: 'center', y: 'bottom' } }))
+    }
+  }, [])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     if (data.password !== data.cpassword) {
-      notfy.error('password dont match')
+      notfy?.error('password dont match')
       return
     }
 
@@ -36,13 +43,13 @@ const RegisterPage: React.FC = () => {
     })
 
     const result = await res.json()
-    console.log(result, 'res+++++++++++++++')
+    // console.log(result, 'res+++++++++++++++')
 
     if (res.ok) {
       router.push('/login')
-      notfy.success('User Registered Successfully')
+      notfy?.success('User Registered Successfully')
     } else {
-      notfy.error(result.message)
+      notfy?.error(result.message)
     }
   }
 

@@ -4,15 +4,13 @@ import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import requests from '../libs/requests'
 import Nav from './components/navbar/Nav'
-import Header from './components/header/Header'
 import dynamic from 'next/dynamic'
 import SkeletonCard from './components/skeleton/SkeletonCard'
 import Dashboard from './components/dashboard/page'
 
-const Movie = dynamic(() => import('./components/result/Movie'), {
-  ssr: false,
-  loading: () => <SkeletonCard />,
-})
+const Movie = dynamic(() => import('./components/result/Movie'), { ssr: false, loading: () => <SkeletonCard /> })
+const Header = dynamic(() => import('./components/header/Header'), { ssr: false })
+
 export default function Home() {
   const [movies, setMovies] = useState([])
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -47,7 +45,7 @@ export default function Home() {
   }, [genre, isAuthenticated])
 
   return (
-    <Suspense>
+    <>
       <div>
         {isAuthenticated ? (
           <>
@@ -59,6 +57,6 @@ export default function Home() {
           <Dashboard />
         )}
       </div>
-    </Suspense>
+    </>
   )
 }

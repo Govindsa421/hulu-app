@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Notyf } from 'notyf'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Input } from '../components/custom/Input'
 
@@ -18,8 +18,14 @@ const LoginPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>()
+  const [notfy, setNotfy] = useState<Notyf | null>(null)
 
-  const notfy = new Notyf({ position: { x: 'center', y: 'bottom' } })
+  useEffect(() => {
+    // Ensure the code is run on the client
+    if (typeof window !== 'undefined') {
+      setNotfy(new Notyf({ position: { x: 'center', y: 'bottom' } }))
+    }
+  }, [])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     // console.log('Submitting login data:', data)
@@ -39,14 +45,14 @@ const LoginPage: React.FC = () => {
         localStorage.setItem('authToken', 'hulutoken')
         // console.log('Login successful:', result)
         router.push('/')
-        notfy.success('Login Success')
+        notfy?.success('Login Success')
       } else {
         // console.error('Login failed:', result.message)
-        notfy.error(result.message)
+        notfy?.error(result.message)
       }
     } catch (error) {
       // console.error('Error during login:', error)
-      notfy.error(error)
+      notfy?.error(error)
     }
   }
 
