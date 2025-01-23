@@ -3,7 +3,9 @@ import React from 'react'
 
 // Fetch data for a specific movie or TV show
 async function getData(type, id) {
-  const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SLUG_URL}/${type}/${id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
+  )
 
   if (!res.ok) {
     throw new Error(`Failed to fetch ${type} details`)
@@ -25,7 +27,7 @@ const DetailPage = async ({ params }) => {
       <div className='flex gap-8'>
         <div className='flex'>
           <Image
-            src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
+            src={`${process.env.NEXT_PUBLIC_IMG_ENDPOINT}${data.poster_path}`}
             alt={data.title || data.name}
             className='rounded-md  m-2'
             width={500}

@@ -10,7 +10,7 @@ const Movie = ({ movies }) => {
   const router = useRouter()
 
   const handleCardClick = (movie) => {
-    const type = movie.media_type || 'movie' // Use media_type if available; otherwise, default to 'movie'
+    const type = movie.media_type || 'movie'
     router.push(`/${type}/${movie.id}`)
   }
 
@@ -24,7 +24,7 @@ const Movie = ({ movies }) => {
                 <div className=' overflow-hidden'>
                   <Image
                     className='w-full h-60  object-cover rounded-md hover:brightness-50 cursor-pointer duration-300'
-                    src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                    src={`${process.env.NEXT_PUBLIC_IMG_ENDPOINT}${movie.backdrop_path}`}
                     alt={'no image'}
                     priority
                     width={1080}
