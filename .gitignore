@@ -20,8 +20,6 @@
 .DS_Store
 *.pem
 
-#files
-/app/api/auth/route.ts/
 
 # debug
 npm-debug.log*
@@ -30,6 +28,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env*.production
 
 # vercel
 .vercel

@@ -30,8 +30,7 @@ function AppContent() {
     if (isAuthenticated) {
       const fetchMovies = async () => {
         try {
-          const requestUrl = `https://api.themoviedb.org/3${requests[genre]?.url || requests.fetchTrending.url}`
-
+          const requestUrl = `${process.env.NEXT_PUBLIC_SLUG_URL}${requests[genre]?.url || requests.fetchTrending.url}`
           const response = await fetch(requestUrl)
           const data = await response.json()
           setMovies(data.results)
