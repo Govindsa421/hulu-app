@@ -7,7 +7,7 @@ console.log(allowedOrigins, 'ALLOW')
 const corsOptions = {
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Access-Control-Allow-Origin': '*',
+  // 'Access-Control-Allow-Origin': '*',
 }
 
 export function middleware(request: NextRequest) {
@@ -22,6 +22,8 @@ export function middleware(request: NextRequest) {
     const preflightHeaders = {
       ...(isAllowedOrigin && { 'Access-Control-Allow-Origin': origin }),
       ...corsOptions,
+      'Access-Control-Allow-Credentials': 'true', // Allow credentials in CORS
+      'Access-Control-Allow-Max-Age': '86400', // Cache preflight response for 24 hours
     }
     return NextResponse.json({}, { headers: preflightHeaders })
   }
@@ -31,6 +33,7 @@ export function middleware(request: NextRequest) {
 
   if (isAllowedOrigin) {
     response.headers.set('Access-Control-Allow-Origin', origin)
+    response.headers.set('Access-Control-Allow-Credentials', 'true') // Allow credentials in CORS
   }
 
   Object.entries(corsOptions).forEach(([key, value]) => {
