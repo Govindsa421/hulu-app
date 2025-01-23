@@ -3,18 +3,18 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "links.papareact.com",
+        protocol: 'https',
+        hostname: 'links.papareact.com',
       },
       {
-        protocol: "https",
-        hostname: "image.tmdb.org",
+        protocol: 'https',
+        hostname: 'image.tmdb.org',
       },
     ],
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
-};
+  // experimental: {
+  //   missingSuspenseWithCSRBailout: false,
+  // },
+}
 
-export default nextConfig;
+export default nextConfig

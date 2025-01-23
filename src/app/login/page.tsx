@@ -1,10 +1,11 @@
 'use client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Notyf } from 'notyf'
-import React, { useEffect, useState } from 'react'
+
+import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Input } from '../components/custom/Input'
+import { useNotfyProvider } from '../context/NotfyProvider'
 
 type FormData = {
   email: string
@@ -13,19 +14,12 @@ type FormData = {
 
 const LoginPage: React.FC = () => {
   const router = useRouter()
+  const { notifySuccess, notifyError } = useNotfyProvider()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>()
-  const [notfy, setNotfy] = useState<Notyf | null>(null)
-
-  useEffect(() => {
-    // Ensure the code is run on the client
-    if (typeof window !== 'undefined') {
-      setNotfy(new Notyf({ position: { x: 'center', y: 'bottom' } }))
-    }
-  }, [])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     // console.log('Submitting login data:', data)
@@ -45,14 +39,14 @@ const LoginPage: React.FC = () => {
         localStorage.setItem('authToken', 'hulutoken')
         // console.log('Login successful:', result)
         router.push('/')
-        notfy?.success('Login Success')
+        notifySuccess('Login Success')
       } else {
         // console.error('Login failed:', result.message)
-        notfy?.error(result.message)
+        notifyError(result.message)
       }
     } catch (error) {
       // console.error('Error during login:', error)
-      notfy?.error(error)
+      notifyError(error)
     }
   }
 

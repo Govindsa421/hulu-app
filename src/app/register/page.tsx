@@ -1,11 +1,11 @@
 'use client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import { Notyf } from 'notyf'
+import React from 'react'
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Input } from '../components/custom/Input'
+import { useNotfyProvider } from '../context/NotfyProvider'
 
 type FormData = {
   username: string
@@ -16,23 +16,16 @@ type FormData = {
 
 const RegisterPage: React.FC = () => {
   const router = useRouter()
+  const { notifySuccess, notifyError } = useNotfyProvider()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>()
-  const [notfy, setNotfy] = useState<Notyf | null>(null)
-
-  useEffect(() => {
-    // Ensure the code is run on the client
-    if (typeof window !== 'undefined') {
-      setNotfy(new Notyf({ position: { x: 'center', y: 'bottom' } }))
-    }
-  }, [])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     if (data.password !== data.cpassword) {
-      notfy?.error('password dont match')
+      notifyError('password dont match')
       return
     }
 
@@ -43,13 +36,13 @@ const RegisterPage: React.FC = () => {
     })
 
     const result = await res.json()
-    // console.log(result, 'res+++++++++++++++')
+    console.log(result, 'res+++++++++++++++')
 
     if (res.ok) {
       router.push('/login')
-      notfy?.success('User Registered Successfully')
+      notifySuccess('User Registered Successfully')
     } else {
-      notfy?.error(result.message)
+      notifyError(result.message)
     }
   }
 

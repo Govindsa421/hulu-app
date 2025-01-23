@@ -3,11 +3,11 @@ import Image from 'next/image'
 import { HeaderItem } from './HeaderItem'
 import { HomeIcon, BoltIcon, CheckBadgeIcon, MagnifyingGlassIcon, UserIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
-import { Notyf } from 'notyf'
+import { useNotfyProvider } from '../../context/NotfyProvider'
 
 const Header = () => {
   const router = useRouter()
-  const notfy = new Notyf({ position: { x: 'center', y: 'bottom' } })
+  const { notifySuccess } = useNotfyProvider()
 
   const handleLogout = () => {
     if (typeof window !== 'undefined') {
@@ -15,7 +15,7 @@ const Header = () => {
       router.push('/')
 
       window.location.reload()
-      notfy.success('Logout success')
+      notifySuccess('Logout success')
     }
   }
 

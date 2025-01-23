@@ -11,7 +11,7 @@ import Dashboard from './components/dashboard/page'
 const Movie = dynamic(() => import('./components/result/Movie'), { ssr: false, loading: () => <SkeletonCard /> })
 const Header = dynamic(() => import('./components/header/Header'), { ssr: false })
 
-export default function Home() {
+function AppContent() {
   const [movies, setMovies] = useState([])
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
@@ -44,19 +44,21 @@ export default function Home() {
     }
   }, [genre, isAuthenticated])
 
+  if (!isAuthenticated) return <Dashboard />
+
   return (
     <>
-      <div>
-        {isAuthenticated ? (
-          <>
-            <Header />
-            <Nav />
-            <Movie movies={movies} />
-          </>
-        ) : (
-          <Dashboard />
-        )}
-      </div>
+      <Header />
+      <Nav />
+      <Movie movies={movies} />
     </>
+  )
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AppContent />
+    </Suspense>
   )
 }
