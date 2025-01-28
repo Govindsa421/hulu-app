@@ -2,7 +2,6 @@
 
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import requests from '../libs/requests'
 import Nav from './components/navbar/Nav'
 import dynamic from 'next/dynamic'
 import SkeletonCard from './components/skeleton/SkeletonCard'
@@ -21,7 +20,6 @@ function AppContent() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('authToken')
-      // console.log(token, "token");
       setIsAuthenticated(!!token)
     }
   }, [])
@@ -30,7 +28,7 @@ function AppContent() {
     if (isAuthenticated) {
       const fetchMovies = async () => {
         try {
-          const requestUrl = `${process.env.NEXT_PUBLIC_SLUG_URL}${requests[genre]?.url || requests.fetchTrending.url}`
+          const requestUrl = `/api/movies/${genre}`
           const response = await fetch(requestUrl)
           const data = await response.json()
           setMovies(data.results)
